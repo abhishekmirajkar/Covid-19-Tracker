@@ -44,7 +44,15 @@ class _IndiaDataState extends State<IndiaData> {
         title: Text("India's Statewise Info"),
       ),
 
-      body: indiaStateData==null? Center(child: CircularProgressIndicator(),) :   ListView.builder(
+      body: indiaStateData==null? Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Center(child: CircularProgressIndicator(),),
+          Text("It's not the app, it's your internet connection"),
+
+        ],
+      ) :   ListView.builder(
           itemCount: indiaStateData==null ? 0 : 33
           ,itemBuilder: (context,index){
         return Container(

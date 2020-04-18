@@ -43,7 +43,15 @@ class _CountryPageState extends State<CountryPage> {
         })
       ],title: Text("All Countries info"),),
 
-      body: countryData==null? Center(child: CircularProgressIndicator(),) :   ListView.builder(
+      body: countryData==null? Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Center(child: CircularProgressIndicator(),),
+          Text("It's not the app, it's your internet connection"),
+
+        ],
+      ) :   ListView.builder(
         itemCount: countryData==null ? 0 : countryData.length
         ,itemBuilder: (context,index){
       return Container(

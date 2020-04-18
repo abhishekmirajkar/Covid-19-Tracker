@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:covid19mastertracker/pages/searchdist.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -11,7 +12,7 @@ class DistData extends StatefulWidget {
 class _DistDataState extends State<DistData> {
 
   List indiaDistData;
-  List temp;
+  List distdata = new List();
   fetchCountryData()async{
 
 
@@ -20,13 +21,18 @@ class _DistDataState extends State<DistData> {
 
     setState(() {
       indiaDistData = json.decode(response.body);
-      //print(indiaDistData[6]);
+      //print(indiaDistData);
+
+      //print(indiaDistData['Kerala']['districtData']);
+
+
+
+      //print(indiaDistData[0]['districtData'][1]['confirmed']);
+     // print(indiaDistData[0]['districtData'].length);
 
 
 
 
-
-      // print(indiaDistData[0]['districtData'][1]['district']);
       //print("IGNORE ME");
       //print(indiaDistData[0]['districtData'][0]);
 
@@ -48,112 +54,118 @@ class _DistDataState extends State<DistData> {
       appBar: AppBar(actions: <Widget>[
         IconButton(icon: Icon(Icons.search), onPressed: (){
 
-          //showSearch(context: context, delegate: Search(countryData));
+          showSearch(context: context, delegate: SearchDist(indiaDistData));
 
         })
-      ],title: Text("Citywise Info"),),
+      ],title: Text("Districtwise Info"),),
 
-      body: indiaDistData==null? Center(child: CircularProgressIndicator(),) :   ListView.builder(
-          itemCount: indiaDistData==null ? 0 : indiaDistData.length
-          ,itemBuilder: (context,index){
+
+
+      body: indiaDistData==null? Column(
+        children: <Widget>[
+          Center(child: CircularProgressIndicator(),),
+          Center(child: Text("It's not the app, it's your internet connection")),
+
+        ],
+      ) :   ListView.builder(
+
+        shrinkWrap: true,
+
+          itemCount: indiaDistData.length,
+
+          itemBuilder: (context,index){
         return Container(
           margin: EdgeInsets.all(15),
-          height: 160,
+          //height: 60,
           decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10),boxShadow: [BoxShadow(color: Colors.grey,blurRadius: 10,offset: Offset(3, 4))]),
 
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    child: Row(
+
+
+              Container(
+                  margin: EdgeInsets.only(top: 10),
+
+                  child: Text(indiaDistData[index]['state'].toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),)),
+
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
                       children: <Widget>[
+                        Image.asset("images/location.png",width: 30,),
 
-                        //temp=indiaDistData[index]['districtData'],
-                        //Text(temp[index].toString()),
-
-
-                        Text(indiaDistData[index]['districtData'].toString(),style: TextStyle(fontWeight: FontWeight.bold),),
-                       // Text(indiaDistData[index]['districtData'][index].toString(),style: TextStyle(fontWeight: FontWeight.bold),),
+                        SizedBox(height: 10,),
 
 
-                        SizedBox(width: 10,),
 
-                        Container(
-                          width: 30,
-                         // child:
-                          //Image.network(indiaDistData[index]['countryInfo']['flag'].toString()),
-                        ),
-
+                        Text("Disctrict",style: TextStyle(fontWeight: FontWeight.bold ,color: Colors.green)),
 
                       ],
                     ),
-                  ),
+                    Column(
+                      children: <Widget>[
+                        Image.asset("images/mask.png",width: 30,),
+                        SizedBox(height: 10,),
 
-                  Container(
-                    margin: EdgeInsets.only(left: 15,top: 10,right: 15),
+                        Text("Total Cases",style: TextStyle(fontWeight: FontWeight.bold ,color: Colors.blue),),
+                      ],
+                    ),
+
+                  ],
+                ),
+              ),
+
+
+
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+                child: ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: indiaDistData[index]['districtData'].length,
+                    itemBuilder: (context,index1){
+                  return Container(
                     child: Row(
+
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
 
                         Column(
                           children: <Widget>[
-                            Image.asset("images/covid.png",width: 25,),
-                            SizedBox(height: 5,),
-
-                            Text("Confirmed",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red),),
-                            //Text(indiaDistData[index]['cases'].toString(),style: TextStyle(fontWeight: FontWeight.w500),)
-
-
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Image.asset("images/mask.png",width: 25,),
-                            SizedBox(height: 5,),
-
-
-                            Text("Active",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue),),
-                          //  Text(indiaDistData[index]['active'].toString(),style: TextStyle(fontWeight: FontWeight.w500),)
-
-
+                            Text(indiaDistData[index]['districtData'][index1]['district'].toString(),style: TextStyle(fontWeight: FontWeight.bold),),
                           ],
                         ),
                         Column(
                           children: <Widget>[
 
-                            Image.asset("images/gtick.png",width: 25,),
-                            SizedBox(height: 5,),
+                            Row(
 
+                              children: <Widget>[
+                                Text(indiaDistData[index]['districtData'][index1]['confirmed'].toString(),style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red[500]),),
 
-                            Text("Recovered",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.green),),
-                           // Text(indiaDistData[index]['recovered'].toString(),style: TextStyle(fontWeight: FontWeight.w500),)
+                              ],
+                            ),
 
 
                           ],
                         ),
-                        Column(
-                          children: <Widget>[
-                            Image.asset("images/rtick.png",width: 25,),
-                            SizedBox(height: 5,),
 
-                            Text("Deaths",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.red),),
-                          //  Text(indiaDistData[index]['deaths'].toString(),style: TextStyle(fontWeight: FontWeight.w500),),
 
-                          ],
-                        ),
 
                       ],
                     ),
-                  )
+                  );
 
-                ],
-              )
+                    }),
+              ),
+
+
+
             ],
           ),
         );

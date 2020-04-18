@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       countryData = json.decode(response.body);
     });
   }
-
+  ScrollController _scrollController = new ScrollController();
   @override
   void initState() {
     fetchWorldWideData();
@@ -70,6 +70,7 @@ class _HomePageState extends State<HomePage> {
         title: Text("COVID - 19 Tracker"),
       ),
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: <Widget>[
             ClipPath(
@@ -188,30 +189,52 @@ class _HomePageState extends State<HomePage> {
 
 
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.grey[200],
+        type: BottomNavigationBarType.fixed,
           currentIndex: _currentIndex,
           items: [
         BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            title: Text("Home"),
-            backgroundColor: Colors.blue),
+            icon: Image.asset("images/home.png",width: 30,),
+            title: Text("Home",style: TextStyle(color: Colors.black),),
+        //    backgroundColor: Colors.blue
+        ),
 
 
 
         BottomNavigationBarItem(
-            icon: Image.asset("images/flag.png",width: 30,),
-            title: Text("India Stats"),
-            backgroundColor: Colors.blue),
+            icon: Image.asset("images/flag.png",width: 30),
+            title: Text("India Stats",style: TextStyle(color: Colors.black,fontSize: 16),),
+        //    backgroundColor: Colors.blue
+        ),
 
 
             BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                title: Text("About Us"),
-                backgroundColor: Colors.blue),
+                icon: Image.asset("images/location.png",width: 30,),
+                title: Text("Citywise Info",style: TextStyle(color: Colors.black),),
+            //    backgroundColor: Colors.blue
+            ),
+
+            BottomNavigationBarItem(
+                icon: Image.asset("images/aboutus.png",width: 30,),
+                title: Text("About Us",style: TextStyle(color: Colors.black),),
+            //    backgroundColor: Colors.whi
+            ),
       ],
       onTap: (index){
             setState(() {
+
+
+
+
               _currentIndex=index;
-              if (_currentIndex==1){
+              if (_currentIndex==0){
+                _scrollController.animateTo(
+                  0.0,
+                  curve: Curves.easeOut,
+                  duration: const Duration(milliseconds: 300),
+                );
+              }
+              else if (_currentIndex==1){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -221,6 +244,12 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => DistData()));
+              }
+              else if(_currentIndex==3){
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AboutMe()));
               }
             });
 

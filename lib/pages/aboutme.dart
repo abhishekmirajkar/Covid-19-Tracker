@@ -131,7 +131,21 @@ class _AboutMeState extends State<AboutMe> {
                   child: GestureDetector( onTap: (){
                     launch("https://covid19-india-adhikansh.herokuapp.com/");
                   }, child: Text("API Source (India Stats)",style: TextStyle(color: Colors.blue),)),
+                ),
+
+                SizedBox(height: 10,),
+
+                Container(
+
+                  child: GestureDetector( onTap: (){
+                    launch("https://api.covid19india.org/");
+                  }, child: Text("API Source (Districtwise Stats)",style: TextStyle(color: Colors.blue),)),
                 )
+
+
+
+
+
 
 
 
